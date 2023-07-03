@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>Śmieci</title>
+    <style>
+      .hidden {
+        display: none;
+      }
+
+      .visible {
+        display: inherit;
+      }
+
+      .wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 5rem;
+      }
+
+      body {
+        font-family: "Noto Sans", sans-serif;
+        font-weight: 300;
+
+        background-color: #001d3d;
+        color: #fff;
+
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .curr {
+        font-size: 3rem;
+      }
+
+      .other {
+        font-size: 1.2rem;
+      }
+
+      .label {
+        font-size: 1rem;
+      }
+
+      .person {
+        font-weight: 400;
+      }
+
+      .today {
+        font-weight: 700;
+      }
+
+      #curr-person {
+        font-weight: bold;
+        color: #ffc300;
+      }
+
+      #today-alert {
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="other name">
+        <div class="label">Poprzednia osoba:</div>
+        <div>
+          <span id="prev-person" class="person"></span> |
+          <span id="prev-date"></span>
+        </div>
+      </div>
+      <div class="curr name">
+        <div class="label">Obecna osoba:</div>
+        <div>
+          <span id="curr-person" class="person"></span> |
+          <span id="curr-date"></span>
+        </div>
+      </div>
+      <div class="other name">
+        <div class="label">Następna osoba:</div>
+        <div>
+          <span id="next-person" class="person"></span> |
+          <span id="next-date"></span>
+        </div>
+      </div>
+    </div>
+    <script>
+      const FORMAT = "DD.MM.YYYY";
+
+      let beginning = dayjs(new Date(2023, 6, 3, 0));
+
+      let now = dayjs();
+
+      console.log(now.format());
+
+      const diff = now.diff(beginning, "day");
+
+      const offset = diff % 3;
+
+      console.log({ offset });
+
+      const idx = Math.floor(diff / 3);
+
+      console.log({ idx });
+
+      const order = ["Janek", "Kuba", "Rafał"];
+
+      const curentPerson = order.at(idx % 3);
+      const nextPerson = order.at((idx + 1) % 3);
+      const prevPerson = order.at((idx - 1) % 3);
+
+      console.log({ prevPerson, curentPerson, nextPerson });
+
+      document.querySelector("#curr-person").textContent = curentPerson;
+
+      const currDate = dayjs(beginning).add(3 * idx, "day");
+
+      const isToday = currDate.diff(now, "day") === 0;
+
+      const currDayNode = document.querySelector("#curr-date");
+
+      currDayNode.textContent = isToday ? "DZISIAJ" : currDate.format(FORMAT);
+
+      if (isToday) {
+        currDayNode.classList.add("today");
+      }
+
+      //const visibliityClass =
+      //currDate.diff(now, "day") === 0 ? "visible" : "hidden";
+
+      //console.log({ visibliityClass });
+
+      //document.querySelector("#today-alert").classList.add(visibliityClass);
+
+      document.querySelector("#prev-person").textContent = prevPerson;
+
+      const prevDate = dayjs(beginning)
+        .add(3 * idx - 3, "day")
+        .format(FORMAT);
+      document.querySelector("#prev-date").textContent = prevDate;
+
+      document.querySelector("#next-person").textContent = nextPerson;
+
+      const nextDate = dayjs(beginning)
+        .add(3 * idx + 3, "day")
+        .format(FORMAT);
+      document.querySelector("#next-date").textContent = nextDate;
+    </script>
+  </body>
+</html>
