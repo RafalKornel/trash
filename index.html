@@ -43,7 +43,7 @@
       }
 
       .curr {
-        font-size: 3rem;
+        font-size: 2.5rem;
       }
 
       .other {
@@ -60,6 +60,7 @@
 
       .today {
         font-weight: 700;
+        text-transform: uppercase;
       }
 
       #curr-person {
@@ -123,7 +124,8 @@
 
       console.log({ prevPerson, curentPerson, nextPerson });
 
-      document.querySelector("#curr-person").textContent = curentPerson;
+      const currPersonNode = document.querySelector("#curr-person");
+      currPersonNode.textContent = curentPerson;
 
       const currDate = dayjs(beginning).add(3 * idx, "day");
 
@@ -131,10 +133,11 @@
 
       const currDayNode = document.querySelector("#curr-date");
 
-      currDayNode.textContent = isToday ? "DZISIAJ" : currDate.format(FORMAT);
+      currDayNode.textContent = isToday ? "dzisiaj" : currDate.format(FORMAT);
 
       if (isToday) {
         currDayNode.classList.add("today");
+        currPersonNode.classList.add("today");
       }
 
       //const visibliityClass =
